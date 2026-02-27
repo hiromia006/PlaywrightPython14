@@ -4,18 +4,24 @@ with sync_playwright() as p:
     browser = p.chromium.launch(headless=False)
     context = browser.new_context()
 
-    # Tab 1
     page1 = context.new_page()
-    page1.goto("https://www.google.com")
-    print("Tab 1:", page1.title())
+    page1.goto("https://google.com")
 
-    # Tab 2
+    # Open second tab
     page2 = context.new_page()
-    page2.goto("https://www.youtube.com")
-    print("Tab 2:", page2.title())
+    page2.goto("https://github.com")
 
-    # Switch back to Tab 1
+    print("Tab1:", page1.title())
+    print("Tab2:", page2.title())
+
     page1.bring_to_front()
-    print("Switched to Tab 1:", page1.title())
+    urls= page1.locator("a").all()
+    for url in urls:
+        print(url.get_attribute("href"))
+
+    page2.bring_to_front()
+    urls = page2.locator("a").all()
+    for url in urls:
+        print(url.get_attribute("href"))
 
     browser.close()
